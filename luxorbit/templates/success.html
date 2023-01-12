@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h2>{% block title %}Success!{% endblock %}</h2>
+{% endblock %}
+
+{% block content %}
+{% if result.valid %}
+Your activity is valid (and so are you!) <br>
+{% else %}
+You are valid even though the activity ain't.<br>
+{% for msg in result.reasons %}
+{{msg}}<br>
+{% endfor %}
+{% endif %}
+{{ result.distance }}<br>
+{{ result.percentage }}
+{% endblock %}

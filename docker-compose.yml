@@ -1,0 +1,14 @@
+version: "3"
+services:
+  luxorbit:
+    build: .
+    environment:
+      - STRAVA_CLIENT_ID=1312
+      - STRAVA_CLIENT_SECRET=verysecret
+    ports:
+      - 4567:4567
+  redis:
+    image: redis:7
+    restart: always
+    ports:
+      - 6379:6379

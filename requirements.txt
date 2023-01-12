@@ -1,0 +1,12 @@
+stravalib
+gunicorn
+flask
+flask_sqlalchemy
+shapely
+pyproj
+celery
+redis
+requests
+geopandas
+fiona
+

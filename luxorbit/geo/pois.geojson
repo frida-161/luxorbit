@@ -1,0 +1,12 @@
+{
+"type": "FeatureCollection",
+"name": "pois",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::25832" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": 1, "name": "Aufzug" }, "geometry": { "type": "Point", "coordinates": [ 292734.120115676603746, 5499840.441083342768252 ] } },
+{ "type": "Feature", "properties": { "fid": 2, "name": "Hobscheid Tunnel" }, "geometry": { "type": "Point", "coordinates": [ 276617.990663394157309, 5510688.093408617191017 ] } },
+{ "type": "Feature", "properties": { "fid": 3, "name": "Kneiff" }, "geometry": { "type": "Point", "coordinates": [ 288375.6876619469258, 5560371.160499500110745 ] } },
+{ "type": "Feature", "properties": { "fid": 4, "name": "Schiessentümpel" }, "geometry": { "type": "Point", "coordinates": [ 305611.693233314843383, 5518223.584023918956518 ] } },
+{ "type": "Feature", "properties": { "fid": 5, "name": "Belval" }, "geometry": { "type": "Point", "coordinates": [ 278967.87033405265538, 5487594.727617481723428 ] } }
+]
+}

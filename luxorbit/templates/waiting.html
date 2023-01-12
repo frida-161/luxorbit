@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block head %}
+ <meta http-equiv="refresh" content="15"/>
+{% endblock %}
+
+{% block header %}
+  <h2>{% block title %}Checking Activity...{% endblock %}</h2>
+{% endblock %}
+
+{% block content %}
+Please wait while we check your activity..<br>
+This page should refresh automatically every 15 seconds.<br>
+{{ task.state }}<br>
+{{ task.status }}<br>
+{{ task.id }}
+{% endblock %}
