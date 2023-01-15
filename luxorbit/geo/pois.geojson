@@ -3,10 +3,12 @@
 "name": "pois",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::25832" } },
 "features": [
-{ "type": "Feature", "properties": { "fid": 1, "name": "Aufzug" }, "geometry": { "type": "Point", "coordinates": [ 292734.120115676603746, 5499840.441083342768252 ] } },
-{ "type": "Feature", "properties": { "fid": 2, "name": "Hobscheid Tunnel" }, "geometry": { "type": "Point", "coordinates": [ 276617.990663394157309, 5510688.093408617191017 ] } },
-{ "type": "Feature", "properties": { "fid": 3, "name": "Kneiff" }, "geometry": { "type": "Point", "coordinates": [ 288375.6876619469258, 5560371.160499500110745 ] } },
-{ "type": "Feature", "properties": { "fid": 4, "name": "Schiessentümpel" }, "geometry": { "type": "Point", "coordinates": [ 305611.693233314843383, 5518223.584023918956518 ] } },
-{ "type": "Feature", "properties": { "fid": 5, "name": "Belval" }, "geometry": { "type": "Point", "coordinates": [ 278967.87033405265538, 5487594.727617481723428 ] } }
+{ "type": "Feature", "properties": { "fid": 1, "name": "Aufzug", "URL": "https://goo.gl/maps/KoyGvVTepWKsj3Us8" }, "geometry": { "type": "Point", "coordinates": [ 292734.120115676603746, 5499840.441083342768252 ] } },
+{ "type": "Feature", "properties": { "fid": 2, "name": "Hobscheid Tunnel", "URL": "https://goo.gl/maps/Xg6vMsxSNLGSAgEC9" }, "geometry": { "type": "Point", "coordinates": [ 276617.990663394157309, 5510688.093408617191017 ] } },
+{ "type": "Feature", "properties": { "fid": 3, "name": "Kneiff", "URL": "https://goo.gl/maps/pXFzmaYEe7QSDZ1X8" }, "geometry": { "type": "Point", "coordinates": [ 288375.6876619469258, 5560371.160499500110745 ] } },
+{ "type": "Feature", "properties": { "fid": 4, "name": "Schiessentümpel", "URL": "https://goo.gl/maps/r2SmmiaLK4zx7Gij8" }, "geometry": { "type": "Point", "coordinates": [ 305611.693233314843383, 5518223.584023918956518 ] } },
+{ "type": "Feature", "properties": { "fid": 5, "name": "Belval", "URL": "https://goo.gl/maps/Hq4oc2dHVFimMCTD6" }, "geometry": { "type": "Point", "coordinates": [ 278967.87033405265538, 5487594.727617481723428 ] } },
+{ "type": "Feature", "properties": { "fid": null, "name": "Belvédère", "URL": "https://goo.gl/maps/PgPo2FfEMemqy3Ax6" }, "geometry": { "type": "Point", "coordinates": [ 274314.606710193504114, 5531972.612402193248272 ] } },
+{ "type": "Feature", "properties": { "fid": null, "name": "Berliner Mauer", "URL": "https://goo.gl/maps/VBnjpbhQv2yQ9UeB9" }, "geometry": { "type": "Point", "coordinates": [ 309242.014778784767259, 5483198.971097429282963 ] } }
 ]
 }

@@ -1,16 +1,26 @@
 {% extends 'base.html' %}
 {% block head %}
- <meta http-equiv="refresh" content="15"/>
+ <meta http-equiv="refresh" content="5"/>
 {% endblock %}
 
 {% block header %}
-  <h2>{% block title %}Checking Activity...{% endblock %}</h2>
+  {% block title%}
+  {% if context == 'activities'%}
+    Checking Activity...
+  {% else %}
+    Checking Route...
+  {% endif %}
+  {% endblock %}
 {% endblock %}
 
 {% block content %}
-Please wait while we check your activity..<br>
-This page should refresh automatically every 15 seconds.<br>
-{{ task.state }}<br>
-{{ task.status }}<br>
-{{ task.id }}
+Please wait while we check your
+  {% if context == 'activities'%}
+    activity
+  {% else %}
+    route
+  {% endif %}
+<br>
+<br>
+This page should refresh automatically every 5 seconds.<br>
 {% endblock %}

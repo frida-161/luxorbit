@@ -1,0 +1,40 @@
+
+{% extends 'base.html' %}
+
+{% block header %}
+  {% block title %}
+    Objectives
+  {% endblock %}
+{% endblock %}
+
+{% block content %}
+<h3>Cantons and neighbouring Countries</h3>
+<p>
+Your route needs to visit all 12 Cantons and all 3 neighbouring Countries.
+The order in which you visit them does not matter. But you need to finish your ride where you started :)
+</p>
+<h3>Points of Interest</h3>
+<p>
+We also have a diverse selection of "Virtual Checkpoits" you need to visit, to make the
+ride more challenging and also show you some beatiful spots.
+As with the Cantons, the order in which you visit them is up to you.
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Link</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for poi in pois %}
+        <tr>
+            <td>{{poi.name}}</td>
+            <td>(N {{poi.lat}} E {{poi.lng}})</td>
+            <td><a class="button" href="https://www.google.de/maps/search/{{poi.lat}},+{{poi.lng}}">Show on Map</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

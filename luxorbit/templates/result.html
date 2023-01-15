@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  {% block title %}
+  {% if result.valid %} 
+    Success!
+  {% else %} 
+    Failure!
+  {% endif %}
+  {% endblock %}
+{% endblock %}
+
+{% block content %}
+{% if result.valid %}
+All challange objectives fullfilled!
+{% else %}
+Your track does not qualify.
+{% endif %}
+<br>
+{% for msg in result.reasons %}
+{{msg}}<br>
+{% endfor %}
+{% endblock %}

@@ -6,7 +6,5 @@ shapely
 pyproj
 celery
 redis
-requests
 geopandas
-fiona
 

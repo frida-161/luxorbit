@@ -11,7 +11,8 @@
     ],
     "editor.wordWrapColumn": 88,
     "files.associations": {
-        "**/requirements.txt": "pip-requirements"
+        "**/requirements.txt": "pip-requirements",
+        "*.html": "jinja-html"
     },
     // Formatter
     "python.formatting.provider": "black",

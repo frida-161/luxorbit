@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% block title %}{{context}}{% endblock %}
+{% endblock %}
+
+{% block content %}
+<list>
+  {% for track in tracks %}
+  <li><a href="{{url_for('check_track', context=context, id=track.id) }}">{{track.name}} {{track.distance}}</a></li>
+  {%endfor %}
+</list>
+{% endblock %}

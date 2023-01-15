@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  {% block title %}
+    Luxembourg Ultracycling Challenge
+  {% endblock %}
+{% endblock %}
+
+{% block content %}
+<a class="button" href="{{url_for('list_tracks', context='routes')}}">validate a route</a>
+<a class="button" href="{{url_for('list_tracks', context='activities')}}">validate an activity</a>
+<a class="button" href="{{url_for('objectives')}}">list objectives</a>
+{% endblock %}

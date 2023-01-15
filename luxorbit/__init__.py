@@ -1,7 +1,8 @@
-from flask_sqlalchemy import SQLAlchemy
+import os
+
 from celery import Celery
 from flask import Flask
-import os
+from flask_sqlalchemy import SQLAlchemy
 
 from luxorbit.client import StravaClient
 
@@ -22,19 +23,20 @@ def make_celery(app):
 app = Flask(__name__)
 app.config.update(
     CELERY_CONFIG={
-        'broker_url': 'redis://redis:6379',
-        'result_backend': 'redis://redis:6379'
+        "broker_url": "redis://redis:6379",
+        "result_backend": "redis://redis:6379",
     }
 )
 celery = make_celery(app)
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'notverysecret')
-app.config['SECRET_KEY'] = SECRET_KEY
+SECRET_KEY = os.getenv("SECRET_KEY", "notverysecret")
+app.config["SECRET_KEY"] = SECRET_KEY
 
 client = StravaClient()
 
 
-#db = SQLAlchemy(app)
-#db.create_all()
+# db = SQLAlchemy(app)
+# db.create_all()
 
-import luxorbit.auth, luxorbit.strava
+import luxorbit.auth
+import luxorbit.routes
