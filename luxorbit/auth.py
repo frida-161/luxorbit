@@ -31,9 +31,7 @@ def auth_required(f):
 
 @app.route("/auth")
 def auth():
-    auth_url = client.authorization_url(
-        redirect_uri=f"http://{LUXORBIT_BASE_URL}/authorized"
-    )
+    auth_url = client.authorization_url(redirect_uri=f"{LUXORBIT_BASE_URL}/authorized")
     return redirect(auth_url, code=302)
 
 

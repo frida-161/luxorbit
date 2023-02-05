@@ -5,11 +5,23 @@ services:
     environment:
       - STRAVA_CLIENT_ID=1312
       - STRAVA_CLIENT_SECRET=verysecret
-      - LUXORBIT_BASE_URL=localhost:4567
+      - LUXORBIT_BASE_URL=http://localhost:4567
     ports:
       - 4567:4567
+
+  worker:
+    build: .
+    hostname: worker
+    entrypoint: celery
+    command: -A luxorbit.celery worker --loglevel=info
+    environment:
+      - STRAVA_CLIENT_ID=1312
+      - STRAVA_CLIENT_SECRET=verysecret
+      - LUXORBIT_BASE_URL=http://localhost:4567
+    depends_on:
+      - redis
+
   redis:
     image: redis:7
-    restart: always
     ports:
       - 6379:6379
