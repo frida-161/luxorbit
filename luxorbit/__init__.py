@@ -1,3 +1,4 @@
+import logging
 import os
 
 from celery import Celery
@@ -28,6 +29,13 @@ app.config.update(
     }
 )
 celery = make_celery(app)
+
+# Setup logging with gunicorn
+if __name__ != "__main__":
+    gunicorn_logger = logging.getLogger("gunicorn.error")
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
+
 
 SECRET_KEY = os.getenv("SECRET_KEY", "notverysecret")
 app.config["SECRET_KEY"] = SECRET_KEY

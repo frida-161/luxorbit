@@ -7,7 +7,18 @@
 {% endblock %}
 
 {% block content %}
-<a class="button" href="{{url_for('list_tracks', context='routes')}}">validate a route</a>
-<a class="button" href="{{url_for('list_tracks', context='activities')}}">validate an activity</a>
-<a class="button" href="{{url_for('objectives')}}">list objectives</a>
+<div class="row">
+  <div class="column">
+    <a style="width:100%" class="button button-outline" href="{{url_for('list_tracks', context='routes')}}">validate a route</a>
+  </div>
+  <div class="column">
+    <a style="width:100%" class="button button-outline" href="{{url_for('list_tracks', context='activities')}}">validate an activity</a>
+  </div>
+  <div class="column">
+    <a style="width:100%" class="button button-outline" href="{{url_for('upload_gpx')}}">upload GPX</a>
+  </div>
+  <div class="column">
+    <a style="width:100%" class="button" href="{{url_for('objectives')}}">list objectives</a>
+  </div>
+</div>
 {% endblock %}

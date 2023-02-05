@@ -1,34 +1,45 @@
+from io import StringIO
 from pathlib import Path
 
 import geopandas as gpd
-from shapely.geometry import LineString, Point
+from shapely.geometry import MultiLineString, Point
 
 from luxorbit import celery, client
 
 
 @celery.task(bind=True)
-def async_validate(self, context, track_id, token):
+def async_validate(self, context, track_id=None, track_file_string=None, token=None):
     self.update_state(state="STARTED")
-    client.access_token = token
 
     valid = False
     reasons = []
     cantons_gdf = gpd.read_file(Path(__file__).parent / Path("geo/cantons.geojson"))
 
-    if context == "routes":
-        streams = client.get_route_streams(track_id)
-    elif context == "activities":
-        streams = client.get_activity_streams(track_id, types=["latlng"])
-    else:
-        return {"valid": False, "reasons": ["wrong context!"]}
+    if context == "upload" and track_file_string:
+        file = StringIO(track_file_string)
+        track_gdf = gpd.read_file(file, layer="tracks")
 
-    # reproject track
-    track_line = LineString(
-        [(coord[1], coord[0]) for coord in streams.get("latlng").data]
-    )
-    track_gdf = gpd.GeoDataFrame({"geometry": [track_line]}, crs="EPSG:4326")
+    elif track_id and token:
+        client.access_token = token
+
+        if context == "routes":
+            streams = client.get_route_streams(track_id)
+        elif context == "activities":
+            streams = client.get_activity_streams(track_id, types=["latlng"])
+        else:
+            return {"valid": False, "reasons": ["wrong context!"]}
+
+        # reproject track
+        track_line = MultiLineString([
+            [(coord[1], coord[0]) for coord in streams.get("latlng").data]
+        ])
+        track_gdf = gpd.GeoDataFrame({"geometry": [track_line]}, crs="EPSG:4326")
+
+    else:
+        return {"valid": False, "context": context}
+
     track_gdf = track_gdf.to_crs(cantons_gdf.crs)
-    track_line = track_gdf.geometry[0]
+    track_line = track_gdf.geometry[0].geoms[0]
 
     # Check Cantons/Countries
     missing_cantons = cantons_gdf[cantons_gdf.intersects(track_line) == False]

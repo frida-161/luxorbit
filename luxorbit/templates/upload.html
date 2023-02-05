@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  {% block title %}
+    Upload GPX
+  {% endblock %}
+{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    <label for="fileField">File field</label>
+    <label for="fileField" class="button input-file">
+      File
+    </label>
+    <input type="file" name="file" id="fileField" class="input-file"/>
+    <input type="submit" value="Upload"/>
+</form>
+{% endblock %}
