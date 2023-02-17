@@ -1,2 +1,3 @@
 my-compose.yml
 server-compose.yml
+variables.env

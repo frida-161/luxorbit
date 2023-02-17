@@ -4,7 +4,6 @@ from functools import wraps
 from flask import redirect, request, session, url_for
 
 from luxorbit import app, client
-from luxorbit.env import LUXORBIT_BASE_URL
 
 
 def auth_required(f):
@@ -31,7 +30,9 @@ def auth_required(f):
 
 @app.route("/auth")
 def auth():
-    auth_url = client.authorization_url(redirect_uri=f"{LUXORBIT_BASE_URL}/authorized")
+    auth_url = client.authorization_url(
+        redirect_uri=f"{app.config['BASE_URL']}/authorized"
+    )
     return redirect(auth_url, code=302)
 
 

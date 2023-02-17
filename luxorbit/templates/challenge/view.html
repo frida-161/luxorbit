@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+  integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+{% endblock %}
+
+{% block script %}
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+  integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+<script>
+  var map = L.map('map').setView([49.611, 6.131], 13);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+  {% for layer in challenge.layers %}
+  $.getJSON("{{ url_for('layer.geojson', layer_id = layer.id) }}", function (data) {
+    L.geoJson(data).addTo(map)
+  });
+  {% endfor %}
+</script>
+{% endblock %}
+
+{% block header %}
+{% block title %}
+Challenge: {{challenge.name}}
+{% endblock %}
+{% endblock %}
+
+{% block content %}
+<div id="map" style="height:400px"></div>
+
+<form method="post" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label for="basic-url" class="form-label">Challenge Name</label>
+    <div class="input-group">
+      <span class="input-group-text" id="basic-addon3">https://test.com/c/</span>
+      <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" name="name"
+        value="{{challenge.name}}">
+    </div>
+    <div class="form-text">give your challenge a name</div>
+  </div>
+  <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="roundtrip" name="roundtrip" value="{{ challenge.roundtrip }}"">
+    <label class=" form-check-label" for="roundtrip">require the track to finish where it started</label>
+  </div>
+  <div class="mb-3">
+    <label for="distance" class="form-label">Distance to cover</label>
+    <input type="number" class="form-control" id="distance" name="distance" value="{{ challenge.required_distance }}">
+  </div>
+  <div class="mb-3">
+    <label for="elevation" class="form-label">Elevation to cover</label>
+    <input type="number" class="form-control" id="elevation" name="elevation"
+      value="{{ challenge.required_elevation }}">
+  </div>
+  <button type="submit" class="btn btn-primary">Edit</button>
+  <a class="btn btn-primary" href="{{ url_for('challenge.add_layer', challenge_id=challenge.id) }}" role="button">Add
+    Layer</a>
+</form>
+{% if challenge.layers %}
+<ul class="list-group">
+  {% for layer in challenge.layers %}
+  <a href="{{ url_for('layer.edit', layer_id=layer.id) }}" class="list-group-item list-group-item-action">
+    {{ layer.name }} ({{ layer.type }})
+  </a>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}

@@ -1,16 +1,14 @@
 from stravalib import Client
 
-from luxorbit.env import STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET
-
 
 class StravaClient(Client):
     """A stravalib Client with a few extras."""
 
-    def __init__(self):
+    def __init__(self, app):
         """Init function of the StravaClient class."""
         super().__init__()
-        self.client_id = STRAVA_CLIENT_ID
-        self.client_secret = STRAVA_CLIENT_SECRET
+        self.client_id = app.config["STRAVA_CLIENT_ID"]
+        self.client_secret = app.config["STRAVA_CLIENT_SECRET"]
 
     def refresh_access_token(self, refresh_token):
         """Get a new access token."""

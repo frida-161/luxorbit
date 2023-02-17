@@ -4,7 +4,7 @@ import geopandas as gpd
 from flask import abort, flash, redirect, render_template, request, session, url_for
 
 from luxorbit import app, client
-from luxorbit.auth import auth_required
+from luxorbit.strava.auth import auth_required
 from luxorbit.validator import async_validate
 
 

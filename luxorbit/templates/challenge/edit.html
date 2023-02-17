@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% block title %}
+Challenge: {{challenge.name}}
+{% endblock %}
+{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label for="basic-url" class="form-label">Challenge Name</label>
+    <div class="input-group">
+      <span class="input-group-text" id="basic-addon3">https://test.com/c/</span>
+      <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" name="name"
+        value="{{ challenge.name | default('', true) }}">
+    </div>
+    <div class="form-text">challenge name needs to be alphanumerical</div>
+  </div>
+  <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="roundtrip" name="roundtrip" {% if challenge.roundtrip
+      %}checked{% endif %}>
+    <label class=" form-check-label" for="roundtrip">require the track to finish where it started</label>
+  </div>
+  <div class="mb-3">
+    <label for="distance" class="form-label">Distance to cover</label>
+    <input type="number" class="form-control" id="distance" name="distance" value="{{ challenge.required_distance }}">
+  </div>
+  <div class="mb-3">
+    <label for="elevation" class="form-label">Elevation to cover</label>
+    <input type="number" class="form-control" id="elevation" name="elevation"
+      value="{{ challenge.required_elevation }}">
+  </div>
+  <button type="submit" class="btn btn-primary">
+    {% if challenge.id %}
+    Edit
+    {% else %}
+    Create
+    {% endif %}
+  </button>
+  {% if challenge.id %}
+  <a class="btn btn-primary" href="{{ url_for('challenge.add_layer', challenge_id=challenge.id) }}" role="button">Add
+    Layer</a>
+  {% endif %}
+</form>
+{% if challenge.layers %}
+<ul class="list-group">
+  {% for layer in challenge.layers %}
+  <a href="{{ url_for('layer.edit', layer_id=layer.id) }}" class="list-group-item list-group-item-action">
+    {{ layer.name }} ({{ layer.type }})
+  </a>
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}

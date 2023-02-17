@@ -2,26 +2,39 @@ version: "3"
 services:
   luxorbit:
     build: .
-    environment:
-      - STRAVA_CLIENT_ID=1312
-      - STRAVA_CLIENT_SECRET=verysecret
-      - LUXORBIT_BASE_URL=http://localhost:4567
+    env_file:
+      - "variables.env"
     ports:
       - 4567:4567
+    depends_on:
+      - luxorbit-db
 
   worker:
     build: .
     hostname: worker
     entrypoint: celery
     command: -A luxorbit.celery worker --loglevel=info
-    environment:
-      - STRAVA_CLIENT_ID=1312
-      - STRAVA_CLIENT_SECRET=verysecret
-      - LUXORBIT_BASE_URL=http://localhost:4567
+    env_file:
+      - "variables.env"
     depends_on:
       - redis
+      - luxorbit-db
 
   redis:
     image: redis:7
     ports:
       - 6379:6379
+
+  luxorbit-db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=luxorbit
+      - POSTGRES_PASSWORD=luxorbit
+    ports:
+      - '25432:5432'
+    volumes:
+      - luxorbit-db:/var/lib/postgresql/data
+
+volumes:
+  luxorbit-db:

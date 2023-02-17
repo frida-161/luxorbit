@@ -6,7 +6,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "docker-compose -f my-compose.yml up -d --build",
+            "command": "docker-compose up -d --build",
             "problemMatcher": [],
             "group": {
                 "kind": "build",

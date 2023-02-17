@@ -1,56 +1,70 @@
-from geoalchemy2 import Geometry
-from s2pg import db
-from sqlalchemy_utils import create_view
-from sqlalchemy import func, select
+import enum
+
+from flask_login import UserMixin
+from sqlalchemy import Boolean, Column, Enum, ForeignKey, Integer, LargeBinary, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import backref, relationship
+from werkzeug.security import check_password_hash, generate_password_hash
+
+Base = declarative_base()
 
 
-class Token(db.Model):
-    __tablename__ = 'token'
-    id = db.Column(db.Integer, primary_key = True)
-    access_token = db.Column(db.String)
-    refresh_token = db.Column(db.String)
-    expires_at = db.Column(db.Integer)
+class GeometryType(enum.Enum):
+    """Available geodata types."""
 
-class DataPoint(db.Model):
-    __tablename__ = 'data_points'
-    id = db.Column(db.Integer, primary_key = True)
-    activity = db.Column(db.String,
-        db.ForeignKey('activities.id'), nullable = False)
-    altitude = db.Column(db.Float)
-    cadence = db.Column(db.Integer)
-    distance = db.Column(db.Float)
-    heartrate = db.Column(db.Integer)
-    moving = db.Column(db.Boolean)
-    watts = db.Column(db.Integer)
-    grade_smooth = db.Column(db.Float)
-    velocity_smooth = db.Column(db.Float)
-    time = db.Column(db.Integer)
-    temp = db.Column(db.Integer)
-    geom = db.Column(Geometry('POINT'))
+    POINT = "point"
+    LINE = "line"
+    POLYGON = "polygon"
 
-class Activity(db.Model):
-    __tablename__ = 'activities'
-    id = db.Column(db.String, primary_key = True)
-    name = db.Column(db.String)
-    type = db.Column(db.String)
-    gear_id = db.Column(db.String)
-    suffer_score = db.Column(db.Integer)
-    calories = db.Column(db.Integer)
-    device_name = db.Column(db.String)
-    trainer = db.Column(db.Boolean)
-    commute = db.Column(db.Boolean)
-    manual = db.Column(db.Boolean)
-    points = db.relationship(
-        'DataPoint', backref = 'activities', lazy = True)
 
-stmt = select([
-    Activity.id,
-    Activity.gear_id,
-    func.ST_SetSRID(func.ST_MakeLine(DataPoint.geom), 4326).label('geom')
-    ]).select_from(DataPoint.__table__.join(Activity,
-    DataPoint.activity == Activity.id)).group_by(Activity.id)
+class Layer(Base):
+    """universal Geodata Layer Model"""
 
-view = create_view('linien', stmt, db.Model.metadata)
+    __tablename__ = "layer"
 
-class Linien(db.Model):
-    __table__ = view
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    type = Column(Enum(GeometryType))
+    file_blob = Column(LargeBinary, nullable=False)
+    name_col = Column(String)
+    about_col = Column(String)
+    link_col = Column(String)
+    image_col = Column(String)
+    weight_col = Column(String)
+    order_col = Column(String)
+    challenge_id = Column(Integer, ForeignKey("challenge.id"))
+
+
+class User(UserMixin, Base):
+    """Model for our users."""
+
+    __tablename__ = "user"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(120), nullable=False, unique=True)
+    password_hash = Column(String(120))
+    superuser = Column(Boolean, default=False)
+    challenges = relationship("Challenge", backref="user", lazy=True)
+
+    def set_password(self, password):
+        """Set the password for the user."""
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        """Check the users password."""
+        return check_password_hash(self.password_hash, password)
+
+
+class Challenge(Base):
+    """Model for our challenges"""
+
+    __tablename__ = "challenge"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    user_id = Column(Integer, ForeignKey("user.id"))
+    roundtrip = Column(Boolean, default=False)
+    layers = relationship("Layer", backref="challenge", lazy=True)
+    roundtrip = Column(Boolean, default=False)
+    required_distance = Column(Integer, default=0)
+    required_elevation = Column(Integer, default=0)

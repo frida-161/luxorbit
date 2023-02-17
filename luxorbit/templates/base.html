@@ -1,28 +1,38 @@
 <!doctype html>
-<head>
-<!-- Google Fonts -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
-<!-- CSS Reset -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
-<!-- Milligram CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
 
-<title>{% block title %}{% endblock %} - luxorbit</title>
-{% block head %}
-{% endblock %}
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+
+  <title>{% block title %}{% endblock %} - luxorbit</title>
+  {% block head %}
+  {% endblock %}
 </head>
+
 <body>
-<div class="container">
-<section class="content">
-  <header>
-    <h1>
-    {% block header %}{% endblock %}
-    </h1>
-  </header>
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-  {% block content %}{% endblock %}
-</section>
-</div>
-</body> 
+  <div class="container">
+    <section class="content">
+      <header>
+        <h1>
+          {% block header %}{% endblock %}
+        </h1>
+      </header>
+      {% for category, message in get_flashed_messages(with_categories=true) %}
+      <div id="alert" class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+      {% block content %}{% endblock %}
+    </section>
+  </div>
+  {% block script %}
+  <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
+  <script>
+    $("#alert").fadeTo(2000, 500).slideUp(500, function () {
+      $("#alert").slideUp(500);
+    });
+  </script>
+  {% endblock %}
+</body>

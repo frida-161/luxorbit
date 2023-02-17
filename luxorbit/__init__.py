@@ -5,7 +5,7 @@ from celery import Celery
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-from luxorbit.client import StravaClient
+from luxorbit.strava.client import StravaClient
 
 
 def make_celery(app):
@@ -22,12 +22,15 @@ def make_celery(app):
 
 
 app = Flask(__name__)
-app.config.update(
-    CELERY_CONFIG={
-        "broker_url": "redis://redis:6379",
-        "result_backend": "redis://redis:6379",
-    }
-)
+app.config.from_object("luxorbit.config")
+
+# sqlalchemy
+db = SQLAlchemy(app)
+
+# Stravaclient
+client = StravaClient(app)
+
+# celery
 celery = make_celery(app)
 
 # Setup logging with gunicorn
@@ -36,15 +39,10 @@ if __name__ != "__main__":
     app.logger.handlers = gunicorn_logger.handlers
     app.logger.setLevel(gunicorn_logger.level)
 
+# Blueprints
+from luxorbit.routes.challenge import c_bp, challenge_bp
+from luxorbit.routes.layer import layer_bp
 
-SECRET_KEY = os.getenv("SECRET_KEY", "notverysecret")
-app.config["SECRET_KEY"] = SECRET_KEY
-
-client = StravaClient()
-
-
-# db = SQLAlchemy(app)
-# db.create_all()
-
-import luxorbit.auth
-import luxorbit.routes
+app.register_blueprint(challenge_bp)
+app.register_blueprint(c_bp)
+app.register_blueprint(layer_bp)

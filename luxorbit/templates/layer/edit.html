@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  {% block title %}
+    layer: {{layer.name}}
+  {% endblock %}
+{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+  <div class="row">
+    <div class="col">
+      <div class="mb-3">
+        <label for="basic-url" class="form-label">layer name</label>
+        <input type="text" class="form-control" id="basic-url" name="name" value="{{layer.name}}">
+        <div class="form-text">give your layer a name</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3">
+        <label for="basic-url" class="form-label"></label>
+        <input type="text" class="form-control" id="basic-url" name="name" value="{{layer.name}}">
+        <div class="form-text">give your layer a name</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    {% for col in ['name', 'about', 'image', 'link', 'weight', 'order'] %}
+    <div class="col">
+      <div class="mb-3">
+        <label for="name_col" class="form-label">{{ col.capitalize() }} Column</label>
+        <select class="form-select" aria-label="Select a {{ col }} column"
+          name="{{ col }}_col" id="{{ col }}_col">
+          {% if layer.name_col %}
+          <option>None</option>
+          {% else %}
+          <option selected>None</option>
+          {% endif %}
+          {% for cn in col_names %}
+            {% if cn == layer[col + "_col"] %}
+              <option value="{{ cn }}" selected>{{ cn }}</option>
+            {% else %}
+              <option value="{{ cn }}">{{ cn }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+{% endblock %}
